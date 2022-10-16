@@ -1,0 +1,1 @@
+(λ x y . (λ x y s z . x s ( y s z )) ( (λ x y s . x ( y s )) (λ s z . s ( s z )) ( (λ x y s z . x s ( y s z )) x (λ s z . s ( s z )) ) ) y)
