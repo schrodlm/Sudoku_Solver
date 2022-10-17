@@ -1,4 +1,4 @@
-(λ x y y . x ( y x y y ) x) ( y x ) ( x x )
-(λ x r s . x ( y x s s ) x) ( y x ) ( x x )
+(λ x y y . x ( x y y ) x) ( y x ) ( x x )
+(λ x r s . x ( x s s ) x) ( y x ) ( x x )
 (λ r s . y x  ( y x s s ) ( y x )) ( x x )
 (λ s . y x ( y x s s ) ( y x ))

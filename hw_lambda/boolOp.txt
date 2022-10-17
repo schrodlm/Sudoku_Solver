@@ -1,1 +1,1 @@
-(λ x y . (λ x y . x (λ t f . t) y) ( (λ x y . x y (λ t f . f)) x ( (λ x . x (λ t f . f) (λ t f . t)) y ) ) ( (λ x . x (λ t f . f) (λ t f . t)) ( (λ x y . x (λ t f . t) y) x y ) ))
+(λ x y . (λ x y . x T y) ((λ x y . x y T) x ((λ x . x F T) y)) ((λ x . x F T) ((λ x y . x T y) x y)))
