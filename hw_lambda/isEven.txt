@@ -1,1 +1,1 @@
-Y (λ f n . ZERO n T (NOT (f (- n 1))))
+Y (λ f n . ZERO n T (ZERO (- n 1) F (f (- n 2)))
