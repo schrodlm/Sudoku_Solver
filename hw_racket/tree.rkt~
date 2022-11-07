@@ -2,14 +2,16 @@
 
 ;returns true if tree is balanced else false
 (define (is-balanced? lst)
-  (check (is-balanced-inner? lst 0))
+  (let ([x (is-balanced-inner? lst 0)])
+     (check x)
+  )
   )
 
 ;returns list of all max depths
 (define (is-balanced-inner? lst depth)
   (if (null? lst)
       depth
-      (cons (is-balanced-inner? (cadr lst) (+ depth 1)) (cons (is-balanced-inner? (caddr lst) (+ depth 1)) null)))
+      (list (is-balanced-inner? (cadr lst) (+ depth 1)) (is-balanced-inner? (caddr lst) (+ depth 1))))
          )
 
 ; checks if every list element is equal 

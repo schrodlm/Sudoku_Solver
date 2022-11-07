@@ -13,7 +13,8 @@
   )
 
 (define (partition-by f lst)
-  (list (filter f lst) (my-neg-filter f lst)))
+  (cons (filter f lst) (cons (my-neg-filter f lst) null))
+  )
 
 
 (define (my-neg-filter f lst)
