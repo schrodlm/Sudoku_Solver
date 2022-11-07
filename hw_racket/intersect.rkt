@@ -2,7 +2,7 @@
 
 ; returns intersection of two lists
 (define (intersect lst1 lst2)
-  (my-quicksort (my-remove-duplicates (intersect-inner lst1 lst2)))
+  (my-quicksort (my-rem (intersect-inner lst1 lst2) '()))
   )
 
 ;inner section of intersect function - returns unsorted intersection with duplicates
@@ -17,8 +17,26 @@
  )
 
 ;remove duplicates
-(define (my-remove-duplicates lon)
-  (foldr (lambda (x y) (cons x (filter (lambda (z) (not (= x z))) y))) empty lon))
+(define (my-rem lst found)
+  (if (null? lst)
+      found
+      (if (foundElement (car lst) found)
+          (my-rem (cdr lst) found)
+          (my-rem (cdr lst) (cons (car lst) found))
+          )
+      )
+  )
+
+;check if element is a duplicate
+(define (foundElement e lst)
+  (if (null? lst)
+      #f
+      (if (= e (car lst))
+         #t
+         (foundElement e (cdr lst))
+         )
+      )
+  )
 
 ; check if element is in lst
 (define (check e lst)
