@@ -15,7 +15,7 @@
 ; checks if every list element is equal 
 (define (check lst)
   (if (null? (cdr lst))
-      #t
+      #true
       (equal? (car lst) (cadr lst))
       )
   )

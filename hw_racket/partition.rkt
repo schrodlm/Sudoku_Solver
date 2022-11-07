@@ -2,7 +2,7 @@
 
 (define (partition-by-l f lst)
   (if (null? lst)
-      '(()())
+      (cons(null null))
       (let ([x (partition-by-l f (cdr lst))])
         (if (f (car lst))
             (list (cons (car lst) (car x)) (cadr x))
