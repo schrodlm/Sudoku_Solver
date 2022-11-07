@@ -13,15 +13,4 @@
   )
 
 (define (partition-by f lst)
-  (list (filter f lst) (my-neg-filter f lst)))
-
-
-(define (my-neg-filter f lst)
-  (if (null? lst)
-      null
-      (if (f (car lst))
-          (my-neg-filter f (cdr lst))
-          (cons (car lst) (my-neg-filter f (cdr lst)))
-          )
-      )
-  )
+  (list (filter f lst) (filter (negate f) lst)))
