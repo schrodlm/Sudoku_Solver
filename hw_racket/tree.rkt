@@ -2,7 +2,10 @@
 
 ;returns true if tree is balanced else false
 (define (is-balanced? lst)
-  (check (is-balanced-inner? lst 0))
+  (if (null? lst)
+      #t
+      (check (is-balanced-inner? lst 0))
+  )
   )
 
 ;returns list of all max depths
