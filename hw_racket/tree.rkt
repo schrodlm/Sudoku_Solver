@@ -4,7 +4,10 @@
 (define (is-balanced? lst)
   (if (null? lst)
       #t
-      (check (is-balanced-inner? lst 0))
+      (if (boolean? (is-balanced-inner? lst 0))
+          #f
+          #t
+          )
   )
   )
 
@@ -12,8 +15,14 @@
 (define (is-balanced-inner? lst depth)
   (if (null? lst)
       depth
-      (cons (is-balanced-inner? (cadr lst) (+ depth 1)) (cons (is-balanced-inner? (caddr lst) (+ depth 1)) null)))
-         )
+      (let ([left (is-balanced-inner? (cadr lst) (+ depth 1))]
+           [right (is-balanced-inner? (caddr lst) (+ depth 1))])
+         (if (check-2 left right)
+             (max left right)
+             #f)
+      )
+   )
+  )
 
 ; checks if every list element is equal 
 (define (check lst)
@@ -22,6 +31,18 @@
       (equal? (car lst) (cadr lst))
       )
   )
+
+(define (check-2 val1 val2)
+  (cond
+    [(boolean? val1)              #f]
+    [(boolean? val2)              #f]
+    [(equal? -1 ( - val1 val2))   #t]
+    [(equal? 1  ( - val1 val2))   #t]
+    [(equal? 0  ( - val1 val2))   #t]
+    [#t                           #f]   
+    )
+  )
+
                   
       
                             
