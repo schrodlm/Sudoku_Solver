@@ -34,8 +34,8 @@
 
 (define (check-2 val1 val2)
   (cond
-    [(boolean? val1)              #f]
-    [(boolean? val2)              #f]
+    [(equal? val1 #f)             #f]
+    [(equal? val2 #f)             #f]
     [(equal? -1 ( - val1 val2))   #t]
     [(equal? 1  ( - val1 val2))   #t]
     [(equal? 0  ( - val1 val2))   #t]
