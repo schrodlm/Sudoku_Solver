@@ -4,7 +4,7 @@
 (define (is-balanced? lst)
   (if (null? lst)
       #t
-      (if (boolean? (is-balanced-inner? lst 0))
+      (if (equal?(is-balanced-inner? lst 0) #f)
           #f
           #t
           )
