@@ -18,7 +18,10 @@
       (let ([left (is-balanced-inner? (cadr lst) (+ depth 1))]
            [right (is-balanced-inner? (caddr lst) (+ depth 1))])
          (if (check-2 left right)
-             (max left right)
+             (if (> left right)
+                 left
+                 right
+                 )
              #f)
       )
    )
