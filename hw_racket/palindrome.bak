@@ -1,18 +1,5 @@
 #lang racket
 
-
-#|
-Palindrom
-
-Napište funkci is-palindrome?, který zjistí, zdali je seznam, kromě prvního a posledního prvku, palindromem. Vizte příklady.
-Pro seznamy délky 0, 1 rovnou vraťte #t.
-
-    (is-palindrome? '(0 1 2 1 3)) → #t
-|#
-
-
-;Tento všechen kód nám nahradí foldl generická funkce
-#|
 ;appends element to the end of the list
 (define (my-append x list)
   (if (null? list)
@@ -28,12 +15,7 @@ Pro seznamy délky 0, 1 rovnou vraťte #t.
       (my-append (car x) (my-reverse (cdr x)))
       )
   )
-|#
 
-
-
-;Tento všechen kód nám nahradí funkce equal?
-#|
 ; check every element
 (define (check lst1 lst2)
   (if (null? (cdr lst1))
@@ -50,7 +32,6 @@ Pro seznamy délky 0, 1 rovnou vraťte #t.
           )
       )
   )
-
 ;lenght of the palindrome
 (define (lst-lenght lst acc)
   (if (null? lst)
@@ -59,13 +40,11 @@ Pro seznamy délky 0, 1 rovnou vraťte #t.
       )
   )
 
-|#
-
 ;is palindrome
 (define (is-palindrome? lst)
-  ;(if (<= (lst-lenght lst 0) 1)
-      ;#t
-      (equal? (cdr lst) (cdr (foldl cons null lst)))
-      ;)
+  (if (<= (lst-lenght lst 0) 1)
+      #t
+      (check (cdr lst) (cdr (my-reverse lst)))
+      )
   )
   

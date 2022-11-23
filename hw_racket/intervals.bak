@@ -1,24 +1,5 @@
 #lang racket
 
-
-#|
-
-Intervaly
-
-
-Napište funkci intervals, která přijímá seznam seznamů. Jednotlivé podseznamy mají vždy dva prvky, tedy například '( (1 5) (2 6) (0 1) (8 10) ).
- Každý tento podseznam reprezentuje intervaly. Například (1 5) reprezentuje interval od 1 do 5 včetně.
-Pro každý tento interval má funkce intervals vypočítat s kolika jinými intervaly se překrývá (průnik intervalu se sebou samým se nepočítá).
-Intervaly jsou vždy zadány vzestupně.
-
-Příklad pro '( (1 5) (2 6) (0 1) (8 10) ):
-
-    (1 5) se překrývá s (2 6) a (0 1), tedy se dvěma.
-    (2 6) se překrývá s (1 5), tedy s jedním.
-    (0 1) se překrývá s (1 5), tedy s jedním.
-    (8 10) se s žádným nepřekrývá, tedy nula průniků.
-|#
-
 (define (intervals lst)
   (intervals-inner lst null)
   )

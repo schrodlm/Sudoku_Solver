@@ -1,17 +1,12 @@
 #lang racket
 
-(define (partition-by-l f lst)
-  (if (null? lst)
-      (cons(null null))
-      (let ([x (partition-by-l f (cdr lst))])
-        (if (f (car lst))
-            (list (cons (car lst) (car x)) (cadr x))
-            (list (car x) (cons (car lst) (cadr x)))
-            )
-        )
-      )
-  )
+#|
+Partition
 
+Napište funkci partition-by, která má jako parametr seznam s a unární predikát f (funkce jednoho parametru vracející #t nebo #f).
+Funkce partition-by vrátí seznam délky dva. První prvek tohoto seznamu bude seznam prvků, které splňují predikát f.
+Druhý prvek tohoto seznamu bude seznam prvků, které nesplňují predikát f. Relativní pořadí jednotlivých prvků bude nezměněné.
+|#
 (define (partition-by f lst)
   (cons (filter f lst) (cons (my-neg-filter f lst) null))
   )

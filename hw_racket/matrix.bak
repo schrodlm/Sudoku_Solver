@@ -1,15 +1,6 @@
 #lang racket
 
 
-#|
-
-Násobení matic
-
-
-Napište funkci matrix-mul, která dostane na vstupu dvě matice a provede maticový součin. Matice je reprezentována jako seznam jednotlivých řádků.
-Můžete se spolehnout, že matice budou vždy mít korektní rozměry a vždy budou mít alespoň jeden řádek a sloupec.
-|#
-
 (define (matrix-mul mat1 mat2)
   (if (null? mat1)
       null
