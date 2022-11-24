@@ -63,9 +63,9 @@ Pro seznamy délky 0, 1 rovnou vraťte #t.
    
 ;is palindrome
 (define (is-palindrome? lst)
-  ;(if (<= (lst-lenght lst 0) 1)
-      ;#t
+  (if (<= (foldl + 0 (map (lambda (n) 1) lst)) 1)
+      #t
       (equal? (foldl cons null (cdr (foldl cons null (cdr lst)))) (cdr (foldl cons null (cdr lst))))
-      ;)
+  )
   )
   
