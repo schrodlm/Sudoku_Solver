@@ -15,7 +15,7 @@ can_x_defend([x,o,x,x,o,x,o,x,x,o,x,x,o,x]). → false.
 
 can_x_defend(L) :-
 
-    not(member(x, L)), !, write("finished"), true.
+    not(member(x, L)), !, true.
 
 
 can_x_defend(L) :-
@@ -33,7 +33,7 @@ can_x_defend(L) :-
 
 
 can_o_win(L) :-
-    not(member(o,L)), !, writeln("hey"), fail.
+    not(member(o,L)), !, fail.
 
 
 can_o_win(L) :-
