@@ -1,7 +1,11 @@
 /*
-Odstranění druhého minima ze seznamu
+Removing the second minimum from the list
 
-Napište predikát without_second_min(+Lst, -Res), který pro seznam čísel Lst vrátí seznam čísel takový, že v něm nebudou žádné výskyty druhého minima ze seznamu Lst. Pokud v Lst nejsou alespoň 2 různá čísla, je predikát nesplnitelný.
+Write a predicate without_second_min(+Lst, -Res) that, for a list of numbers Lst,
+returns a list of numbers such that there are no occurrences of the second minimum from the list Lst. 
+If there are not at least 2 different numbers in Lst, the predicate is unfulfillable.
+
+Examples:
 
     without_second_min([1,2,3,2,1], R). → R = [1,3,1].
     without_second_min([1,1], R). → false.
@@ -12,13 +16,14 @@ Napište predikát without_second_min(+Lst, -Res), který pro seznam čísel Lst
 */
 
 
-
+%without_second_min(+L, -Res)
 without_second_min(L, Res) :-
     find_second_min(L, Second),
     ldelete(L, Second, Res).
 
 
 
+%find_second_min(+L, -Second)
 find_second_min(L, Second) :-
     sort(L, [First | T]),
     ldelete([First | T], First, Res),
@@ -27,6 +32,7 @@ find_second_min(L, Second) :-
 
 
 %Delete from list
+%ldelete(+L, -ElementToDelete, -ResultList)
 ldelete([], E, []).
 
 %Found item to delete
