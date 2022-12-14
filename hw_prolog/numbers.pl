@@ -21,8 +21,7 @@ numbers(L, E) :-
 % numbers(+List, +ToFind, -M)
 %násobení
 numbers([H|T], ToFind) :-
-
-    %writeln([H|T]),    
+    
     member(ListElement1,[H|T]),
     member(ListElement2,[H|T]),
 
@@ -37,7 +36,6 @@ numbers([H|T], ToFind) :-
 
 %dělení
 numbers([H|T], ToFind) :-
-        %writeln([H|T]),
         member(ListElement1,[H|T]),
         member(ListElement2,[H|T]),
         
@@ -54,8 +52,7 @@ numbers([H|T], ToFind) :-
 
 %sčítání
 numbers([H|T], ToFind) :-
-    
-    %writeln([H|T]),    
+        
     member(ListElement1,[H|T]),
     member(ListElement2,[H|T]),
 
@@ -72,7 +69,6 @@ numbers([H|T], ToFind) :-
 %odčítání
 numbers([H|T], ToFind) :-
     
-    %writeln([H|T]),    
     member(ListElement1,[H|T]),
     member(ListElement2,[H|T]),
 
