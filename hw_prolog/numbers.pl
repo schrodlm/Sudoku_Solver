@@ -16,7 +16,7 @@ numbers([], _) :- fail.
 numbers([L|T], E) :- T = [], L \= E, !, fail.
 
 numbers(L, E) :-
-    member(E,L),!,writeln("Number found!"),true.
+    member(E,L),!,true.
 
 % numbers(+List, +ToFind, -M)
 %násobení
