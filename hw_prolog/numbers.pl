@@ -98,13 +98,3 @@ ldelete([H|T], E, [H|R]) :-
     ldelete(T,E,R).
 
 
-
-
-my-test([H|T], R) :-
-
-    writeln([H|T]),
-    member(ListElement1,[H|T]),
-    member(ListElement2,[H|T]),
-    ListElement1 \= ListElement2,
-    R is ListElement1*ListElement2.
-
