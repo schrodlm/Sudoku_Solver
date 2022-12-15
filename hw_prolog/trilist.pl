@@ -27,7 +27,7 @@ app([], E, E).
 app([Head|Tail], E, [Head|Tmp]) :-
     app(Tail, E, Tmp).
     
-
+trilist([]):- !.
 trilist(L) :-
     llenght(L, Size),
     Size >= 3,
