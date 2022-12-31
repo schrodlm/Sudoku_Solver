@@ -59,9 +59,7 @@ Co bych chtěl ještě implementovat:
 ; inserts new value to the board and return that new board
  (define (insertToBoard board val row col) 
              (list-set sudoku-ex1 row
-                       (list-set (list-ref board col) row val)))
-
-
+                       (list-set (list-ref board row) col val)))
 
 (define (sudoku-solver board)
   (sudoku-solver-inner board 0 0)
