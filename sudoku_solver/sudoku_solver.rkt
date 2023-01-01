@@ -33,6 +33,32 @@
     (4 0 9 0 8 1 0 6 0) 
     (0 0 0 0 2 9 0 0 1)))
 
+(define four-by-four-sudoku
+  '((0 0 0 0) 
+    (0 0 0 0) 
+    (0 0 0 0)
+    (0 0 0 0)
+   ))
+
+(define hex-by-hex-sudoku
+  '((0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
+    (0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
+    (0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
+    (0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
+    (0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
+    (0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
+    (0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
+    (0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
+    (0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
+    (0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
+    (0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
+    (0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
+    (0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
+    (0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
+    (0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
+    (0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
+    ))
+
 
 (define beginner-sudoku
   '((0 0 0 2 6 0 7 0 1) 
@@ -105,7 +131,14 @@ Co bych chtěl ještě implementovat:
 ; Udělat README.md
 ; Checknout jestli board, kterou dostanu je valid -> nenachází se zde žádná nevalidní buňka, splňuje povolené velikosti (n^2 x n^2 ; n <= 1)
 
+(define (board-size board)
+  (sub1 (length board))
+  )
 
+(define (grid-size board)
+  (sqrt (length board))
+  )
+        
 
 ; Main Sudoku Solver function
 ;---------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -123,8 +156,8 @@ Co bych chtěl ještě implementovat:
   (cond [(= 0 (list-ref (list-ref board row) col))       (cell-fill 1 board row col)] ;if the cell is undefined (0)
 
         ; cell is not empty (number is given and cannot be changed)
-        [(< col 8)           (sudoku-solver-inner board row (add1 col))]
-        [(< row 8)           (sudoku-solver-inner board (add1 row) 0)]
+        [(< col (board-size board) )           (sudoku-solver-inner board row (add1 col))] ;!
+        [(< row (board-size board))           (sudoku-solver-inner board (add1 row) 0)]    ;!
         [else (displayln "Solution:")
                   (for ((rowline board)) (println rowline))]
                   )
@@ -135,11 +168,11 @@ Co bych chtěl ještě implementovat:
 ;---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 (define (cell-fill i board row col)
-  (cond [(= i 10)     #f]
+  (cond [(= i (add1 (length board)))     #f]                  ;!
         [(isValid board i row col)
                                     (define newBoard (insertToBoard board i row col)) ;creates a new board with value inserted
-                                    (cond [(< col 8)           (if (sudoku-solver-inner newBoard row (add1 col)) #t (cell-fill (add1 i) board row col))]
-                                          [(< row 8)           (if (sudoku-solver-inner newBoard (add1 row) 0) #t (cell-fill (add1 i) board row col))]
+                                    (cond [(< col (board-size newBoard))           (if (sudoku-solver-inner newBoard row (add1 col)) #t (cell-fill (add1 i) board row col))] ;!
+                                          [(< row (board-size newBoard))           (if (sudoku-solver-inner newBoard (add1 row) 0) #t (cell-fill (add1 i) board row col))]   ;!
                                           [else (displayln "Solution: ") (for ((row newBoard)) (println row))])]
         [else     (cell-fill (add1 i) board row col)]
         )
@@ -171,22 +204,23 @@ Co bych chtěl ještě implementovat:
 ; Return list containing all numbers in 3x3 grid specified by x and y positions and filters out undefined values -> (0)
 
 (define (get-grid board pos-y pos-x)
-  (get-grid-inner board (floor(/ pos-x 3)) (floor (/ pos-y 3)) 0)
+  (get-grid-inner board (floor(/ pos-x (grid-size board))) (floor (/ pos-y (grid-size board))) 0 (grid-size board))
    )
 
 
 
 ; Check each row and decide if it is a part of 3x3 grid specified by [x,y] position - its inner function get-grid-x then checks specified rows for the right column
 
-; board   - full 9x9 (can be any other allowed grid) board of values where 0 is undefined value
-; grid-x  -   we should consider cols starting from pos/3 = grid-x
-; grid-y  -   we should consider rows starting from pos/3 = grid-y
-; row     -   current row
+; board     -   full 9x9 (can be any other allowed grid) board of values where 0 is undefined value
+; grid-x    -   we should consider cols starting from pos/3 = grid-x
+; grid-y    -   we should consider rows starting from pos/3 = grid-y
+; row       -   current row
+; grid-size -   size of the grid
 
-(define (get-grid-inner board grid-x grid-y row)
+(define (get-grid-inner board grid-x grid-y row grid-size)
   (cond    [ (null? board)                null]
-           [ (= (floor(/ row 3)) grid-y) (append (get-grid-x (car board) grid-x 0) (get-grid-inner (cdr board) grid-x grid-y (+ row 1)))]
-           [ #t                          (get-grid-inner (cdr board) grid-x grid-y (+ row 1))]
+           [ (= (floor(/ row grid-size)) grid-y) (append (get-grid-x (car board) grid-x 0 grid-size) (get-grid-inner (cdr board) grid-x grid-y (+ row 1) grid-size))]
+           [ #t                          (get-grid-inner (cdr board) grid-x grid-y (+ row 1) grid-size)]
            )
   )
 
@@ -194,13 +228,13 @@ Co bych chtěl ještě implementovat:
 ; -> Inner function of get-grid-inner
 
 ; row     - list of values in that row
-; grid-x  - first x pos in the list that we should consider ( if grid-x = 3 and row = [1,2,3,4,5,6,7,8,9] - we should consider numbers starting from pos/3 = 3 ([7,8,9])
+; grid-x  - first x pos in the list that we should consider (explanation for 9x9 boards ->  if grid-x = 3 and row = [1,2,3,4,5,6,7,8,9] - we should consider numbers starting from pos/3 = 3 ([7,8,9])
 ; col     - current pos in the list
-  (define (get-grid-x row grid-x col)
+  (define (get-grid-x row grid-x col grid-size)
   (cond [(null? row)                          null]
-        [(= (car row) 0)                      (get-grid-x (cdr row) grid-x (+ col 1))]
-        [(= (floor(/ col 3)) grid-x)          (cons (car row) (get-grid-x (cdr row) grid-x (+ col 1)))]
-        [ #t                                  (get-grid-x (cdr row) grid-x (+ col 1))]
+        [(= (car row) 0)                      (get-grid-x (cdr row) grid-x (+ col 1) grid-size)]
+        [(= (floor(/ col grid-size)) grid-x)          (cons (car row) (get-grid-x (cdr row) grid-x (+ col 1) grid-size))]
+        [ #t                                  (get-grid-x (cdr row) grid-x (+ col 1) grid-size)]
         )
     )
 
