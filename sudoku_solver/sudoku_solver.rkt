@@ -13,8 +13,8 @@
     (0 0 0 0 2 9 0 0 0)))
 
 (define sudoku-ex2
-  '((0 0 0 9 7 0 0 0 0) 
-    (0 4 0 2 5 0 1 0 7) 
+  '((1 2 3 9 7 4 4 5 6)
+    (0 4 0 2 5 0 1 0 7)
     (0 0 7 6 0 0 4 0 3)
     (0 1 2 8 0 0 6 0 0)
     (9 7 0 0 4 0 0 3 5)
@@ -22,6 +22,16 @@
     (2 0 1 0 0 7 5 0 0)
     (4 0 9 0 8 1 0 6 0)
     (0 0 0 0 2 9 0 0 1)))
+(define sudoku-ex3
+  '((0 2 3 4 5 6 7 8 9) 
+    (1 4 0 2 5 0 1 0 7) 
+    (0 0 7 6 0 0 4 0 3)
+    (0 1 2 8 0 0 6 0 0)
+    (9 7 0 0 4 0 0 3 5)
+    (0 0 4 0 0 2 9 1 0)
+    (2 0 1 0 0 7 5 0 0)
+    (4 0 9 0 8 1 0 6 0)
+    (0 0 0 0 2 9 0 0 0)))
 
 ; Brute force recursion approach
 
@@ -58,11 +68,15 @@ Co bych chtěl ještě implementovat:
 
 ; inserts new value to the board and return that new board
  (define (insertToBoard board val row col) 
-             (list-set sudoku-ex1 row
+             (list-set board row
                        (list-set (list-ref board row) col val)))
 
 (define (sudoku-solver board)
-  (sudoku-solver-inner board 0 0)
+  (if (sudoku-solver-inner board 0 0)
+      void
+      (writeln "No solution found")
+      
+      )
   )
 
 (define (sudoku-solver-inner board row col)
@@ -75,18 +89,22 @@ Co bych chtěl ještě implementovat:
               (define newBoard (insertToBoard board i row col))
             (cond [(< col 8)           (sudoku-solver-inner newBoard row (add1 col))]
                   [(< row 8)           (sudoku-solver-inner newBoard (add1 row) 0)]
-                  [else (displayln "SOLUTION:")
+                  [else (displayln "Solution1:")
                    (for ((rowline newBoard)) (println rowline))])))]
         ; we are at number that was already given in the board
 
          
             [(< col 8)           (sudoku-solver-inner board row (add1 col))]
             [(< row 8)           (sudoku-solver-inner board (add1 row) 0)]
-            [else (displayln "solution:")
+            [else (displayln "Solution2:")
                   (for ((rowline board)) (println rowline))]
                   )
             )
 
 
-               
+(define (my-for-loop board )
+  (cond [(> x 3)                                         (writeln x)]
+        [(if (my-for-loop (add1 i) (add1 x))  (writeln i) void)]    
+  )
+  )
               
