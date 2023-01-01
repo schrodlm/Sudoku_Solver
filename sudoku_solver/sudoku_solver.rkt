@@ -1,28 +1,17 @@
 #lang racket
 
+(define empty-sudoku
+  '((0 0 0 0 0 0 0 0 0) 
+    (0 0 0 0 0 0 0 0 0) 
+    (0 0 0 0 0 0 0 0 0)
+    (0 0 0 0 0 0 0 0 0)
+    (0 0 0 0 0 0 0 0 0)
+    (0 0 0 0 0 0 0 0 0)
+    (0 0 0 0 0 0 0 0 0)
+    (0 0 0 0 0 0 0 0 0)
+    (0 0 0 0 0 0 0 0 0)))
 
-(define sudoku-ex1
-  '((0 0 0 9 7 0 0 0 0) 
-    (0 4 0 2 5 0 1 0 7) 
-    (0 0 7 6 0 0 4 0 3)
-    (0 1 2 8 0 0 6 0 0)
-    (9 7 0 0 4 0 0 3 5)
-    (0 0 4 0 0 2 9 1 0)
-    (2 0 1 0 0 7 5 0 0)
-    (4 0 9 0 8 1 0 6 0)
-    (0 0 0 0 2 9 0 0 0)))
-
-(define sudoku-ex2
-  '((1 2 3 9 7 4 4 5 6)
-    (0 4 0 2 5 0 1 0 7)
-    (0 0 7 6 0 0 4 0 3)
-    (0 1 2 8 0 0 6 0 0)
-    (9 7 0 0 4 0 0 3 5)
-    (0 0 4 0 0 2 9 1 0)
-    (2 0 1 0 0 7 5 0 0)
-    (4 0 9 0 8 1 0 6 0)
-    (0 0 0 0 2 9 0 0 1)))
-(define sudoku-ex3
+(define unsolvable
   '((0 2 3 4 5 6 7 8 9) 
     (1 4 0 2 5 0 1 0 7) 
     (0 0 7 6 0 0 4 0 3)
@@ -32,6 +21,51 @@
     (2 0 1 0 0 7 5 0 0)
     (4 0 9 0 8 1 0 6 0)
     (0 0 0 0 2 9 0 0 0)))
+
+(define beginner-sudoku
+  '((0 0 0 2 6 0 7 0 1) 
+    (6 8 0 0 7 0 0 9 0) 
+    (1 9 0 0 0 4 5 0 0)
+    (8 2 0 1 0 0 0 4 0)
+    (0 0 4 6 0 2 9 0 0)
+    (0 5 0 0 0 3 0 2 8)
+    (0 0 9 3 0 0 0 7 4)
+    (0 4 0 0 5 0 0 3 6)
+    (7 0 3 0 1 8 0 0 0)))
+
+
+(define intermediate-sudoku
+  '((0 2 0 6 0 8 0 0 0) 
+    (5 8 0 0 0 9 7 0 0) 
+    (0 0 0 0 4 0 0 0 0)
+    (3 7 0 0 0 0 5 0 0)
+    (6 0 0 0 0 0 0 0 4)
+    (0 0 8 0 0 0 0 1 3)
+    (0 0 0 0 2 0 0 0 0)
+    (0 0 9 8 0 0 0 3 6)
+    (0 0 0 3 0 6 0 9 0)))
+
+(define difficult-sudoku
+  '((0 0 0 6 0 0 4 0 0) 
+    (7 0 0 0 0 3 6 0 0) 
+    (0 0 0 0 9 1 0 8 0)
+    (0 0 0 0 0 0 0 0 0)
+    (0 5 0 1 8 0 0 0 3)
+    (0 0 0 3 0 6 0 4 5)
+    (0 4 0 2 0 0 0 6 0)
+    (9 0 3 0 0 0 0 0 0)
+    (0 2 0 0 0 0 1 0 0)))
+
+(define extreme-sudoku
+  '((0 2 0 0 0 0 0 0 0) 
+    (0 0 0 6 0 0 0 0 3) 
+    (0 7 4 0 8 0 0 0 0)
+    (0 0 0 0 0 3 0 0 2)
+    (0 8 0 0 4 0 0 1 0)
+    (6 0 0 5 0 0 0 0 0)
+    (0 0 0 0 1 0 7 8 0)
+    (5 0 0 0 0 9 0 0 0)
+    (0 0 0 0 0 0 0 4 0)))
 
 ; Brute force recursion approach
 
@@ -61,7 +95,7 @@ Co bych chtěl ještě implementovat:
 (define (isValid board val row col)
   (cond [(member val (list-ref board row))                              #f] ;checks if number is in row
         [(member val (map (lambda (x) (list-ref x col)) board))         #f] ;checks if number is in column
-        ; doplnit 3x3 grid
+        [(member val (get-grid board row col))                          #f] ;checks if number is in specified grid
         [else                                                           #t]
         )
   )
@@ -73,7 +107,7 @@ Co bych chtěl ještě implementovat:
 
 (define (sudoku-solver board)
   (if (sudoku-solver-inner board 0 0)
-      void
+      (void)
       (writeln "No solution found")
       
       )
@@ -91,16 +125,66 @@ Co bych chtěl ještě implementovat:
                   )
             )
 
-;THis for loops tries to put a value of 1-9 to specified cell
-(define (my-for-loop i board row col )
+;This for loop tries to put a value of 1-9 to specified cell
+(define (my-for-loop i board row col)
   (cond [(= i 10)     #f]
         [(isValid board i row col)
                                     (define newBoard (insertToBoard board i row col))
-                                    (cond [(< col 8)           (sudoku-solver-inner newBoard row (add1 col))]
-                                          [(< row 8)           (sudoku-solver-inner newBoard (add1 row) 0)]
-                                          [else (displayln "Solution1:") (for ((rowline newBoard)) (println rowline))])]
+                                    (cond [(< col 8)           (if (sudoku-solver-inner newBoard row (add1 col)) #t (my-for-loop (add1 i) board row col))]
+                                          [(< row 8)           (if (sudoku-solver-inner newBoard (add1 row) 0) #t (my-for-loop (add1 i) board row col))]
+                                          [else (displayln "Solution: ") (for ((row newBoard)) (println row))])]
         [else     (my-for-loop (add1 i) board row col)]
         )
   )
-       
+
+; Implement your own ref-list
+; Udělat README.md
+; Checknout jestli board, kterou dostanu je valid -> nenachází se zde žádná nevalidní buňka, splňuje povolené velikosti (n^2 x n^2 ; n <= 1)
+
               
+
+
+; Getting 3x3 grid
+;=========================================================================================================================
+
+
+; Return list containing all numbers in 3x3 grid specified by x and y positions and filters out undefined values -> (0)
+
+(define (get-grid board pos-y pos-x)
+  (get-grid-inner board (floor(/ pos-x 3)) (floor (/ pos-y 3)) 0)
+   )
+
+
+
+; Check each row and decide if it is a part of 3x3 grid specified by [x,y] position - its inner function get-grid-x then checks specified rows for the right column
+
+; board   - full 9x9 (can be any other allowed grid) board of values where 0 is undefined value
+; grid-x  -   we should consider cols starting from pos/3 = grid-x
+; grid-y  -   we should consider rows starting from pos/3 = grid-y
+; row     -   current row
+
+(define (get-grid-inner board grid-x grid-y row)
+  (cond    [ (null? board)                null]
+           [ (= (floor(/ row 3)) grid-y) (append (get-grid-x (car board) grid-x 0) (get-grid-inner (cdr board) grid-x grid-y (+ row 1)))]
+           [ #t                          (get-grid-inner (cdr board) grid-x grid-y (+ row 1))]
+           )
+  )
+
+; This is the part of getting 3x3 grid that checks row for specific columns, filters out undefined values (0) and returns values part of [x,y] specified position
+; -> Inner function of get-grid-inner
+
+; row     - list of values in that row
+; grid-x  - first x pos in the list that we should consider ( if grid-x = 3 and row = [1,2,3,4,5,6,7,8,9] - we should consider numbers starting from pos/3 = 3 ([7,8,9])
+; col     - current pos in the list
+  (define (get-grid-x row grid-x col)
+  (cond [(null? row)                          null]
+        [(= (car row) 0)                      (get-grid-x (cdr row) grid-x (+ col 1))]
+        [(= (floor(/ col 3)) grid-x)          (cons (car row) (get-grid-x (cdr row) grid-x (+ col 1)))]
+        [ #t                                  (get-grid-x (cdr row) grid-x (+ col 1))]
+        )
+    )
+
+;=========================================================================================================================
+
+
+
