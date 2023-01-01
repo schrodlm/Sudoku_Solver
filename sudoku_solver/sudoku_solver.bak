@@ -22,18 +22,6 @@
     (4 0 9 0 8 1 0 6 0)
     (0 0 0 0 2 9 0 0 0)))
 
-(define more-than-one-solution-sudoku
-  '((0 0 0 9 7 0 0 0 0) 
-    (0 4 0 2 5 0 1 0 7) 
-    (0 0 7 6 0 0 4 0 3) 
-    (0 1 2 8 0 0 6 0 0) 
-    (9 7 0 0 4 0 0 3 5) 
-    (0 0 4 0 0 2 9 1 0) 
-    (2 0 1 0 0 7 5 0 0) 
-    (4 0 9 0 8 1 0 6 0) 
-    (0 0 0 0 2 9 0 0 1)))
-
-
 (define beginner-sudoku
   '((0 0 0 2 6 0 7 0 1) 
     (6 8 0 0 7 0 0 9 0) 
@@ -101,14 +89,21 @@ Co bych chtěl ještě implementovat:
 
 |#
 
-; Implement your own ref-list
-; Udělat README.md
-; Checknout jestli board, kterou dostanu je valid -> nenachází se zde žádná nevalidní buňka, splňuje povolené velikosti (n^2 x n^2 ; n <= 1)
 
 
+; Checks row, column and 3x3 grid, if number is possible to insert
+(define (isValid board val row col)
+  (cond [(member val (list-ref board row))                              #f] ;checks if number is in row
+        [(member val (map (lambda (x) (list-ref x col)) board))         #f] ;checks if number is in column
+        [(member val (get-grid board row col))                          #f] ;checks if number is in specified grid
+        [else                                                           #t]
+        )
+  )
 
-; Main Sudoku Solver function
-;---------------------------------------------------------------------------------------------------------------------------------------------------------
+; inserts new value to the board and return that new board
+ (define (insertToBoard board val row col) 
+             (list-set board row
+                       (list-set (list-ref board row) col val)))
 
 (define (sudoku-solver board)
   (if (sudoku-solver-inner board 0 0)
@@ -119,53 +114,38 @@ Co bych chtěl ještě implementovat:
   )
 
 (define (sudoku-solver-inner board row col)
-        
-  (cond [(= 0 (list-ref (list-ref board row) col))       (cell-fill 1 board row col)] ;if the cell is undefined (0)
+        ;if the cell is undefined (0)
+  (cond [(= 0 (list-ref (list-ref board row) col))       (my-for-loop 1 board row col)]
 
-        ; cell is not empty (number is given and cannot be changed)
+        ; we are at number that was already given in the board
         [(< col 8)           (sudoku-solver-inner board row (add1 col))]
         [(< row 8)           (sudoku-solver-inner board (add1 row) 0)]
-        [else (displayln "Solution:")
+        [else (displayln "Solution2:")
                   (for ((rowline board)) (println rowline))]
                   )
             )
 
-
-; Cell filling - tries to put a value of 1-9 to specified cell
-;---------------------------------------------------------------------------------------------------------------------------------------------------------
-
-(define (cell-fill i board row col)
+;This for loop tries to put a value of 1-9 to specified cell
+(define (my-for-loop i board row col)
   (cond [(= i 10)     #f]
         [(isValid board i row col)
-                                    (define newBoard (insertToBoard board i row col)) ;creates a new board with value inserted
-                                    (cond [(< col 8)           (if (sudoku-solver-inner newBoard row (add1 col)) #t (cell-fill (add1 i) board row col))]
-                                          [(< row 8)           (if (sudoku-solver-inner newBoard (add1 row) 0) #t (cell-fill (add1 i) board row col))]
+                                    (define newBoard (insertToBoard board i row col))
+                                    (cond [(< col 8)           (if (sudoku-solver-inner newBoard row (add1 col)) #t (my-for-loop (add1 i) board row col))]
+                                          [(< row 8)           (if (sudoku-solver-inner newBoard (add1 row) 0) #t (my-for-loop (add1 i) board row col))]
                                           [else (displayln "Solution: ") (for ((row newBoard)) (println row))])]
-        [else     (cell-fill (add1 i) board row col)]
+        [else     (my-for-loop (add1 i) board row col)]
         )
   )
 
-; Inserts new value to the board
-;---------------------------------------------------------------------------------------------------------------------------------------------------------
- (define (insertToBoard board val row col) 
-             (list-set board row
-                       (list-set (list-ref board row) col val))
-   )
+; Implement your own ref-list
+; Udělat README.md
+; Checknout jestli board, kterou dostanu je valid -> nenachází se zde žádná nevalidní buňka, splňuje povolené velikosti (n^2 x n^2 ; n <= 1)
 
-
-; Checks row, column and 3x3 grid, if number is possible to insert
-;---------------------------------------------------------------------------------------------------------------------------------------------------------
-(define (isValid board val row col)
-  (cond [(member val (list-ref board row))                              #f] ;checks if number is in row
-        [(member val (map (lambda (x) (list-ref x col)) board))         #f] ;checks if number is in column
-        [(member val (get-grid board row col))                          #f] ;checks if number is in specified grid
-        [else                                                           #t] ;check is complete and value is valid
-        )
-  )
+              
 
 
 ; Getting 3x3 grid
-;---------------------------------------------------------------------------------------------------------------------------------------------------------
+;=========================================================================================================================
 
 
 ; Return list containing all numbers in 3x3 grid specified by x and y positions and filters out undefined values -> (0)
@@ -203,6 +183,8 @@ Co bych chtěl ještě implementovat:
         [ #t                                  (get-grid-x (cdr row) grid-x (+ col 1))]
         )
     )
+
+;=========================================================================================================================
 
 
 
