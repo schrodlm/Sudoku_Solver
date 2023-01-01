@@ -81,30 +81,26 @@ Co bych chtěl ještě implementovat:
 
 (define (sudoku-solver-inner board row col)
         ;if the cell is undefined (0)
-  (cond [(= 0 (list-ref (list-ref board row) col) ) 
-        (for ((i (range 1 10)))
-          ;if we can insert val to the cell - we try
-          (when (isValid board i row col)
-              ;we will create new board with inserted value inside
-              (define newBoard (insertToBoard board i row col))
-            (cond [(< col 8)           (sudoku-solver-inner newBoard row (add1 col))]
-                  [(< row 8)           (sudoku-solver-inner newBoard (add1 row) 0)]
-                  [else (displayln "Solution1:")
-                   (for ((rowline newBoard)) (println rowline))])))]
-        ; we are at number that was already given in the board
+  (cond [(= 0 (list-ref (list-ref board row) col))       (my-for-loop 1 board row col)]
 
-         
-            [(< col 8)           (sudoku-solver-inner board row (add1 col))]
-            [(< row 8)           (sudoku-solver-inner board (add1 row) 0)]
-            [else (displayln "Solution2:")
+        ; we are at number that was already given in the board
+        [(< col 8)           (sudoku-solver-inner board row (add1 col))]
+        [(< row 8)           (sudoku-solver-inner board (add1 row) 0)]
+        [else (displayln "Solution2:")
                   (for ((rowline board)) (println rowline))]
                   )
             )
 
-
-(define (my-for-loop board )
-  (cond [(> x 3)                                         (writeln x)]
-        [(if (my-for-loop (add1 i) (add1 x))  (writeln i) void)]    
+;THis for loops tries to put a value of 1-9 to specified cell
+(define (my-for-loop i board row col )
+  (cond [(= i 10)     #f]
+        [(isValid board i row col)
+                                    (define newBoard (insertToBoard board i row col))
+                                    (cond [(< col 8)           (sudoku-solver-inner newBoard row (add1 col))]
+                                          [(< row 8)           (sudoku-solver-inner newBoard (add1 row) 0)]
+                                          [else (displayln "Solution1:") (for ((rowline newBoard)) (println rowline))])]
+        [else     (my-for-loop (add1 i) board row col)]
+        )
   )
-  )
+       
               
