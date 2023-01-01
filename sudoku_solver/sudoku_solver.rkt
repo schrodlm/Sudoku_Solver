@@ -1,145 +1,38 @@
 #lang racket
+(require racket/include)
+(include "test-boards.rkt")
 
-(define empty-sudoku
-  '((0 0 0 0 0 0 0 0 0) 
-    (0 0 0 0 0 0 0 0 0) 
-    (0 0 0 0 0 0 0 0 0)
-    (0 0 0 0 0 0 0 0 0)
-    (0 0 0 0 0 0 0 0 0)
-    (0 0 0 0 0 0 0 0 0)
-    (0 0 0 0 0 0 0 0 0)
-    (0 0 0 0 0 0 0 0 0)
-    (0 0 0 0 0 0 0 0 0)))
-
-(define unsolvable
-  '((0 2 3 4 5 6 7 8 9) 
-    (1 4 0 2 5 0 1 0 7) 
-    (0 0 7 6 0 0 4 0 3)
-    (0 1 2 8 0 0 6 0 0)
-    (9 7 0 0 4 0 0 3 5)
-    (0 0 4 0 0 2 9 1 0)
-    (2 0 1 0 0 7 5 0 0)
-    (4 0 9 0 8 1 0 6 0)
-    (0 0 0 0 2 9 0 0 0)))
-
-(define more-than-one-solution-sudoku
-  '((0 0 0 9 7 0 0 0 0) 
-    (0 4 0 2 5 0 1 0 7) 
-    (0 0 7 6 0 0 4 0 3) 
-    (0 1 2 8 0 0 6 0 0) 
-    (9 7 0 0 4 0 0 3 5) 
-    (0 0 4 0 0 2 9 1 0) 
-    (2 0 1 0 0 7 5 0 0) 
-    (4 0 9 0 8 1 0 6 0) 
-    (0 0 0 0 2 9 0 0 1)))
-
-(define four-by-four-sudoku
-  '((0 0 0 0) 
-    (0 0 0 0) 
-    (0 0 0 0)
-    (0 0 0 0)
-   ))
-
-(define hex-by-hex-sudoku
-  '((0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
-    (0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
-    (0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
-    (0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
-    (0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
-    (0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
-    (0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
-    (0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
-    (0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
-    (0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
-    (0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
-    (0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
-    (0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
-    (0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
-    (0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
-    (0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
-    ))
-
-
-(define beginner-sudoku
-  '((0 0 0 2 6 0 7 0 1) 
-    (6 8 0 0 7 0 0 9 0) 
-    (1 9 0 0 0 4 5 0 0)
-    (8 2 0 1 0 0 0 4 0)
-    (0 0 4 6 0 2 9 0 0)
-    (0 5 0 0 0 3 0 2 8)
-    (0 0 9 3 0 0 0 7 4)
-    (0 4 0 0 5 0 0 3 6)
-    (7 0 3 0 1 8 0 0 0)))
-
-
-(define intermediate-sudoku
-  '((0 2 0 6 0 8 0 0 0) 
-    (5 8 0 0 0 9 7 0 0) 
-    (0 0 0 0 4 0 0 0 0)
-    (3 7 0 0 0 0 5 0 0)
-    (6 0 0 0 0 0 0 0 4)
-    (0 0 8 0 0 0 0 1 3)
-    (0 0 0 0 2 0 0 0 0)
-    (0 0 9 8 0 0 0 3 6)
-    (0 0 0 3 0 6 0 9 0)))
-
-(define difficult-sudoku
-  '((0 0 0 6 0 0 4 0 0) 
-    (7 0 0 0 0 3 6 0 0) 
-    (0 0 0 0 9 1 0 8 0)
-    (0 0 0 0 0 0 0 0 0)
-    (0 5 0 1 8 0 0 0 3)
-    (0 0 0 3 0 6 0 4 5)
-    (0 4 0 2 0 0 0 6 0)
-    (9 0 3 0 0 0 0 0 0)
-    (0 2 0 0 0 0 1 0 0)))
-
-(define extreme-sudoku
-  '((0 2 0 0 0 0 0 0 0) 
-    (0 0 0 6 0 0 0 0 3) 
-    (0 7 4 0 8 0 0 0 0)
-    (0 0 0 0 0 3 0 0 2)
-    (0 8 0 0 4 0 0 1 0)
-    (6 0 0 5 0 0 0 0 0)
-    (0 0 0 0 1 0 7 8 0)
-    (5 0 0 0 0 9 0 0 0)
-    (0 0 0 0 0 0 0 4 0)))
 
 ; Brute force recursion approach
 
 #|
-  1) Funkce, který vrátí vyplněný list/sudoku
-        (define (solver))
-        Ta zkontroluje každou buňku zda v ní je číslo nebo ne
 
-  2) Jestli ne zkusí vložit číslo 1-9
-  3) Před vložením musím zkontrolovat jestli je číslo validní na vložení
-        -> funkce isValid(row,col, board, valToInstert)
-         isValid bude mít 3 dílčí části
-         1. Zkontrolovat řádku
-         2. Zkontrolovat sloupec
-         3. Zkontrolovat 3x3 grid ve kterém se nachází -> 3x3 grid bych si mohl vytvořit  z toho boardu co jsem dostal
+ Idea:
 
-Co bych chtěl ještě implementovat:
-1) Pattern matching nějakej (define/match funkcí nebo jen match() - obojí dělá to same, jen je rozdíl v zápisu), ještě přesně nevím kde, ale abych si to vyzkoušel, protože to bude ve zkoušce
-2) GUI možná, jestli zbyde čas
-3) Na prosemináři říkali, že chtějí i nějaký testy, příklady testů jsou na prosemináři 25.11.2022 -> ten test by měl být v extrením rkt filu a includovat ten náš main
+ Our program tries to insert values that follow sudoku rules:
+
+      1. Each row must contain the numbers 1-9 exactly once
+      2. Each column must contain the numbers 1-9 exactly once
+      3. Each 3×3 box must contain the numbers 1-9 exactly once
+
+These rules were specific to 9x9 sudokus, but there can be sudoku of any size that follow the rule: (n^2 x n^2 ; n <= 1) -> where n^2 is number of rows and columns
+
+This program is able to solve sudoku of any size that follows this rules and is solvable.
+
+After value is inserted we continue to next column and if we are at the end of the row we will move to the begging of next row. If we reach last column of the last row we can print out the solution.
+If somewhere along the way we will be unable to insert value between 1-9 to a cell we will backtrack to last cell that is possible to ocuppy with another number and try that number instead (brute force).
+
+
+TODOS:
+    - Implement your own ref-list
+    - Check if provided board is valid
+
 
 |#
 
-; Implement your own ref-list
-; Udělat README.md
-; Checknout jestli board, kterou dostanu je valid -> nenachází se zde žádná nevalidní buňka, splňuje povolené velikosti (n^2 x n^2 ; n <= 1)
 
-(define (board-size board)
-  (sub1 (length board))
-  )
 
-(define (grid-size board)
-  (sqrt (length board))
-  )
-        
-
+  
 ; Main Sudoku Solver function
 ;---------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -164,11 +57,47 @@ Co bych chtěl ještě implementovat:
             )
 
 
+#|
+ Board validity checking - this function checks at the start of the solve if the board is valid
+ Invalid boards:
+      1) Is invalid size
+      2) Contains invalid cell values (following the rules of sudoku)
+      3) Contains duplicate cell values in a row or in a column
+|#
+;---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+(define (validBoard board)
+  (define size (length board))
+
+
+  (cond  [(not(list? board))                                                         #f] ;check if provided board is a list
+         [(not(integer? (sqrt size)))                                                #f] ;check if board is valid size
+         [(checkDuplicateNumbers board 0 (length board))                             #f]
+         [else                                                    (checkRow board size)]))
+
+(define (checkRow board size)
+  (cond [(null? board)                                                                                #t]
+        [(not(equal? (length (car board)) size))                                                      #f]
+        [(not(andmap (lambda (x) (and (<= x size) (>= x 0))) (car board)))                            #f]
+        [else                                                                (checkRow (cdr board) size)]
+          )
+      )
+
+
+(define (checkDuplicateNumbers board num size)
+  (cond [(= num size)                                                                                     #f]
+        [(check-duplicates (filter (lambda (x) (not(= x 0))) (list-ref board num)))                       #t]
+        [(check-duplicates (filter (lambda (x) (not(= x 0))) (map (lambda (x) (list-ref x num)) board)))  #t]
+        [else                                                  (checkDuplicateNumbers board (add1 num) size)])
+  )
+        
+
+
 ; Cell filling - tries to put a value of 1-9 to specified cell
 ;---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 (define (cell-fill i board row col)
-  (cond [(= i (add1 (length board)))     #f]                  ;!
+  (cond [(= i (add1 (length board)))     #f]               
         [(isValid board i row col)
                                     (define newBoard (insertToBoard board i row col)) ;creates a new board with value inserted
                                     (cond [(< col (board-size newBoard))           (if (sudoku-solver-inner newBoard row (add1 col)) #t (cell-fill (add1 i) board row col))] ;!
@@ -211,11 +140,11 @@ Co bych chtěl ještě implementovat:
 
 ; Check each row and decide if it is a part of 3x3 grid specified by [x,y] position - its inner function get-grid-x then checks specified rows for the right column
 
-; board     -   full 9x9 (can be any other allowed grid) board of values where 0 is undefined value
-; grid-x    -   we should consider cols starting from pos/3 = grid-x
-; grid-y    -   we should consider rows starting from pos/3 = grid-y
-; row       -   current row
-; grid-size -   size of the grid
+; board     - full 9x9 (can be any other allowed grid) board of values where 0 is undefined value
+; grid-x    - we should consider cols starting from pos/3 = grid-x
+; grid-y    - we should consider rows starting from pos/3 = grid-y
+; row       - current row
+; grid-size - size of the grid
 
 (define (get-grid-inner board grid-x grid-y row grid-size)
   (cond    [ (null? board)                null]
@@ -227,9 +156,10 @@ Co bych chtěl ještě implementovat:
 ; This is the part of getting 3x3 grid that checks row for specific columns, filters out undefined values (0) and returns values part of [x,y] specified position
 ; -> Inner function of get-grid-inner
 
-; row     - list of values in that row
-; grid-x  - first x pos in the list that we should consider (explanation for 9x9 boards ->  if grid-x = 3 and row = [1,2,3,4,5,6,7,8,9] - we should consider numbers starting from pos/3 = 3 ([7,8,9])
-; col     - current pos in the list
+; row       - list of values in that row
+; grid-x    - first x pos in the list that we should consider (explanation for 9x9 boards ->  if grid-x = 3 and row = [1,2,3,4,5,6,7,8,9] - we should consider numbers starting from pos/3 = 3 ([7,8,9])
+; col       - current pos in the list
+; grid-size - size of the grid
   (define (get-grid-x row grid-x col grid-size)
   (cond [(null? row)                          null]
         [(= (car row) 0)                      (get-grid-x (cdr row) grid-x (+ col 1) grid-size)]
@@ -238,5 +168,16 @@ Co bych chtěl ještě implementovat:
         )
     )
 
+;Sizes
+;---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+(define (board-size board)
+  (sub1 (length board))
+  )
+
+(define (grid-size board)
+  (sqrt (length board))
+  )
+      
 
 
