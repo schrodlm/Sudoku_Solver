@@ -33,15 +33,11 @@ You can also create your own board, using template boards located in *test-board
 
 Cells occupied by 0 are undefined and you can change them to any valid number. Then call `(sudoku-solver name-of-the-template-board)` function and result should be printed out.
 
-## Running the tests
+## Tests
 
-Explain how to run the automated tests for this system
+Program is tested using Racket Unit Testing framework - **Rackunit**
 
-### Sample Tests
-
-Explain what these tests test and why
-
-    Give an example
+You can run the tests, check them or even modify them in a _tests.rkt_ source file. You can run the rust by simply running the executable.
 
 
 ## Authors
@@ -51,11 +47,4 @@ Explain what these tests test and why
   - **Billie Thompson** - *Provided README Template* -
     [PurpleBooth](https://github.com/PurpleBooth)
 
-  
-
-## License
-
-This project is licensed under the [CC0 1.0 Universal](LICENSE.md)
-Creative Commons License - see the [LICENSE.md](LICENSE.md) file for
-details
 
