@@ -37,11 +37,11 @@ TODOS:
 ;---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 (define (sudoku-solver board)
+  (if (validBoard board)
   (if (sudoku-solver-inner board 0 0)
       (void)
-      (writeln "No solution found")
-      
-      )
+      "No solution found")
+  "Invalid board provided")
   )
 
 (define (sudoku-solver-inner board row col)
@@ -51,8 +51,7 @@ TODOS:
         ; cell is not empty (number is given and cannot be changed)
         [(< col (board-size board) )           (sudoku-solver-inner board row (add1 col))] ;!
         [(< row (board-size board))           (sudoku-solver-inner board (add1 row) 0)]    ;!
-        [else (displayln "Solution:")
-                  (for ((rowline board)) (println rowline))]
+        [else board]
                   )
             )
 
@@ -73,6 +72,7 @@ TODOS:
   (cond  [(not(list? board))                                                         #f] ;check if provided board is a list
          [(not(integer? (sqrt size)))                                                #f] ;check if board is valid size
          [(checkDuplicateNumbers board 0 (length board))                             #f]
+         [(checkGrid board (length board) (sqrt(length board)) 0 0)                  #f]
          [else                                                    (checkRow board size)]))
 
 (define (checkRow board size)
@@ -89,6 +89,13 @@ TODOS:
         [(check-duplicates (filter (lambda (x) (not(= x 0))) (list-ref board num)))                       #t]
         [(check-duplicates (filter (lambda (x) (not(= x 0))) (map (lambda (x) (list-ref x num)) board)))  #t]
         [else                                                  (checkDuplicateNumbers board (add1 num) size)])
+  )
+
+(define (checkGrid board size grid-size row col)
+  (cond [(check-duplicates (get-grid board row col))                    #t]
+        [(< col size)          (checkGrid board size grid-size row (+ col grid-size))]
+        [(< row size)          (checkGrid board size grid-size (+ row grid-size) 0)]
+        [else #f])
   )
         
 
@@ -179,5 +186,7 @@ TODOS:
   (sqrt (length board))
   )
       
-
+;Provides
+;---------------------------------------------------------------------------------------------------------------------------------------------------------
+(provide sudoku-solver)
 
