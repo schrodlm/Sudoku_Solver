@@ -38,12 +38,12 @@ TODOS:
 
 (define (sudoku-solver board)
   (if (validBoard board)
-  (if (sudoku-solver-inner board 0 0)
-      (void)
-      "No solution found")
+  (let ([solvedSudoku (sudoku-solver-inner board 0 0)])
+  (displayln "Solution: ") (for ((row solvedSudoku)) (println row))) ;printing out solved board
   "Invalid board provided")
   )
 
+;Returns solved sudoku board (in a list)
 (define (sudoku-solver-inner board row col)
         
   (cond [(= 0 (list-ref (list-ref board row) col))       (cell-fill 1 board row col)] ;if the cell is undefined (0)
@@ -107,9 +107,9 @@ TODOS:
   (cond [(= i (add1 (length board)))     #f]               
         [(isValid board i row col)
                                     (define newBoard (insertToBoard board i row col)) ;creates a new board with value inserted
-                                    (cond [(< col (board-size newBoard))           (if (sudoku-solver-inner newBoard row (add1 col)) #t (cell-fill (add1 i) board row col))] ;!
-                                          [(< row (board-size newBoard))           (if (sudoku-solver-inner newBoard (add1 row) 0) #t (cell-fill (add1 i) board row col))]   ;!
-                                          [else (displayln "Solution: ") (for ((row newBoard)) (println row))])]
+                                    (cond [(< col (board-size newBoard))           (let ([sol (sudoku-solver-inner newBoard row (add1 col))]) (if sol sol (cell-fill (add1 i) board row col)))] ;!
+                                          [(< row (board-size newBoard))           (let ([sol (sudoku-solver-inner newBoard (add1 row) 0)]) (if sol sol (cell-fill (add1 i) board row col)))]   ;!
+                                          [else newBoard])]
         [else     (cell-fill (add1 i) board row col)]
         )
   )
