@@ -2,9 +2,9 @@
 
 Program created in **Racket** programming language that is able to solve sudokus of any valid size.
 
-If there is more than one solution, solver will print only one and if sudoku is unsolvable our program is able to recognize that and inform us.
-It will also check at the start if provided board is valid. It has to be valid size and defined number also have to be valid. 
-It is also able to determine how to work with different sized grids and what numbers a rules apply to these specific sizes.
+If there is more than one solution, solver will print only one and if sudoku is unsolvable (invalid board is provided) our program is able to recognize that before it starts searching for a solution.
+It is also able to determine how to work with different sized grids and what numbers & rules apply to these specific sizes.
+Program is thoroughly tested and user is able to access these tests and even modify them.
 
 ## Getting Started
 

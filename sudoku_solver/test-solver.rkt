@@ -88,11 +88,11 @@
 
 
 ;Multiple solutions sudokus
-; - we will check if provided solution is a valid board - we will use our (validBoard) function
+; - we will check if provided solution is a valid board - we will use (validBoard) function
 ;==============================================================================
 
 (check-equal? (validBoard (sudoku-solver-inner more-than-one-solution-sudoku 0 0)) #true)
 
-(check-equal? (validBoard (sudoku-solver-inner four-by-four 0 0)) #true)
+(check-equal? (validBoard (sudoku-solver-inner four-by-four-sudoku 0 0)) #true)
 
-(check-equal? (validBoard (sudoku-solver-inner hex-by-hex 0 0)) #true)
+(check-equal? (validBoard (sudoku-solver-inner hex-by-hex-sudoku 0 0)) #true)
