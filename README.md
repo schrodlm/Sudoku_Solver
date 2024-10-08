@@ -38,13 +38,3 @@ Cells occupied by 0 are undefined and you can change them to any valid number. T
 Program is tested using Racket Unit Testing framework - **Rackunit**
 
 You can run the tests, check them or even modify them in a _tests.rkt_ source file. You can run the rust by simply running the executable.
-
-
-## Authors
-
-  - **Matěj Schrödl** - *Created the program* 
-
-  - **Billie Thompson** - *Provided README Template* -
-    [PurpleBooth](https://github.com/PurpleBooth)
-
-
