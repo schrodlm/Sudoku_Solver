@@ -1,8 +1,8 @@
 # Sudoku solver
 
-Program created in **Racket** programming language that is able to solve sudokus of any valid (reasonable!) size.
+Program created in **Racket** programming language that is able to solve sudokus of any valid (reasonable) size.
 
-If there is more than one solution, solver will print only one and if sudoku is unsolvable (invalid board is provided) our program is able to recognize that before it starts searching for a solution.
+If there is more than one solution, solver will print only one and if sudoku is unsolvable (invalid board is provided), program is able to recognize that before it starts searching for a solution.
 It is also able to determine how to work with different sized grids and what numbers & rules apply to these specific sizes.
 Program is thoroughly tested and user is able to access these tests and even modify them.
 
